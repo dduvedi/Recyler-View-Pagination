@@ -23,8 +23,6 @@ import in.rasta.userpagintation.R;
 
 public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int ITEM = 0;
-
     private UserCollection userCollections;
     private Context context;
 
@@ -72,9 +70,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private LinearLayout createOddView(LinearLayout innerItemContainer, String imageUrl) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        innerItemContainer.setLayoutParams(layoutParams);
         ImageView imageView = new ImageView(context);
 
         LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -94,7 +89,9 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (isOdd)
             i = 1;
 
-        for (; i <= count; i++) {
+        int value = i;
+
+        for (; isOdd ? i <= count : i < count; i++) {
 
             LinearLayout linearLayout = new LinearLayout(context);
 
@@ -110,13 +107,15 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             SquareImageView imageView = new SquareImageView(context);
             imageView.setLayoutParams(imageViewParams);
-            Glide.with(context).load(getUrl(items.get(i))).into(imageView);
+            Glide.with(context).load(getUrl(items.get(value))).into(imageView);
+            value++;
             linearLayout.addView(imageView);
 
             SquareImageView imageView1 = new SquareImageView(context);
 
             imageView1.setLayoutParams(imageViewParams);
-            Glide.with(context).load(getUrl(items.get(i < items.size() - 1 ? i + 1 : i))).into(imageView1);
+            Glide.with(context).load(getUrl(items.get(value))).into(imageView1);
+            value++;
             linearLayout.addView(imageView1);
             innerItemContainer.addView(linearLayout);
 
@@ -135,7 +134,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return ITEM;
+        return position;
     }
 
 
